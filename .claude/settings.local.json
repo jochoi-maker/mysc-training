@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(git --version)",
+      "Bash(git config:*)",
+      "Bash(winget install:*)",
+      "Bash(gh:*)",
+      "Bash(where gh)",
+      "Bash(refreshenv)",
+      "Bash(cmd /c \"gh --version\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
