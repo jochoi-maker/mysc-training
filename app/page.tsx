@@ -68,7 +68,7 @@ export default function TrainingRegistration() {
   // D-X 계산 (클라이언트 사이드에서만)
   useEffect(() => {
     const calculateDaysLeft = () => {
-      const deadline = new Date('2025-08-20')
+      const deadline = new Date('2025-09-05')
       const today = new Date()
       const diffTime = deadline.getTime() - today.getTime()
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
@@ -187,13 +187,13 @@ export default function TrainingRegistration() {
         <div className="text-center mb-8 bg-black text-white p-6 rounded-lg">
           <h1 className="text-4xl font-bold text-white mb-2">MYSC 조직원 교육</h1>
           <p className="text-gray-300 text-lg">교육 일정을 선택하고 신청해주세요. 전 직원 필수로 1회는 신청하셔야 합니다.</p>
-          <p className="text-gray-300 text-lg">(#교육시간 10시~17시)</p>
+          <p className="text-gray-300 text-lg">(#교육시간 10시~15시30분)</p>
                       <div className="mt-4 flex justify-center gap-4">
               <Badge variant="outline" className="text-lg px-4 py-2 bg-white text-black border-white">
                 전체 신청자: {registrations.filter(reg => reg.date && reg.date.trim() !== '').length}/90명
               </Badge>
               <Badge variant="secondary" className="text-lg px-4 py-2 bg-gray-700 text-white">
-                신청 마감일: 8월 20일 (D-{daysLeft})
+                신청 마감일: 9월 5일 (D-{daysLeft})
               </Badge>
             </div>
         </div>
