@@ -9,7 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchNames, updateMemberDate, fetchAllRegistrations, fetchTrainingDates } from "@/app/actions/google-sheets"
+import { fetchNames, updateMemberDate, fetchAllRegistrations, fetchTrainingDates, fetchEducationTime, fetchApplicationDeadline } from "@/app/actions/google-sheets"
 
 export default function TrainingRegistration() {
   const [members, setMembers] = useState<string[]>([])
@@ -18,6 +18,8 @@ export default function TrainingRegistration() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [daysLeft, setDaysLeft] = useState<number>(0)
+  const [educationTime, setEducationTime] = useState<string>('')
+  const [applicationDeadline, setApplicationDeadline] = useState<string>('2025-09-05')
   
   const [formData, setFormData] = useState({
     name: "",
@@ -55,6 +57,18 @@ export default function TrainingRegistration() {
         } else {
           setError(registrationsResult.error || '신청 정보를 가져오는데 실패했습니다.')
         }
+        
+        // 교육 시간 정보 가져오기
+        const timeResult = await fetchEducationTime()
+        if (timeResult.success) {
+          setEducationTime(timeResult.data)
+        }
+        
+        // 신청 마감일 가져오기
+        const deadlineResult = await fetchApplicationDeadline()
+        if (deadlineResult.success) {
+          setApplicationDeadline(deadlineResult.data)
+        }
       } catch (err) {
         setError('데이터 로딩 중 오류가 발생했습니다.')
       } finally {
@@ -68,15 +82,17 @@ export default function TrainingRegistration() {
   // D-X 계산 (클라이언트 사이드에서만)
   useEffect(() => {
     const calculateDaysLeft = () => {
-      const deadline = new Date('2025-09-05')
+      const deadline = new Date(applicationDeadline)
       const today = new Date()
       const diffTime = deadline.getTime() - today.getTime()
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
       setDaysLeft(Math.max(0, diffDays))
     }
     
-    calculateDaysLeft()
-  }, [])
+    if (applicationDeadline) {
+      calculateDaysLeft()
+    }
+  }, [applicationDeadline])
 
   // Helper functions
   const getRegistrationCount = (dateId: string) => {
@@ -187,13 +203,13 @@ export default function TrainingRegistration() {
         <div className="text-center mb-8 bg-black text-white p-6 rounded-lg">
           <h1 className="text-4xl font-bold text-white mb-2">MYSC 조직원 교육</h1>
           <p className="text-gray-300 text-lg">교육 일정을 선택하고 신청해주세요. 전 직원 필수로 1회는 신청하셔야 합니다.</p>
-          <p className="text-gray-300 text-lg">(#교육시간 10시~15시30분)</p>
+          {educationTime && <p className="text-gray-300 text-lg">{educationTime}</p>}
                       <div className="mt-4 flex justify-center gap-4">
               <Badge variant="outline" className="text-lg px-4 py-2 bg-white text-black border-white">
                 전체 신청자: {registrations.filter(reg => reg.date && reg.date.trim() !== '').length}/90명
               </Badge>
               <Badge variant="secondary" className="text-lg px-4 py-2 bg-gray-700 text-white">
-                신청 마감일: 9월 5일 (D-{daysLeft})
+                신청 마감일: {applicationDeadline} (D-{daysLeft})
               </Badge>
             </div>
         </div>
@@ -216,7 +232,7 @@ export default function TrainingRegistration() {
         <Card>
           <CardHeader>
             <CardTitle>교육 신청</CardTitle>
-            <CardDescription>총 90명 정원 (각 날짜별 25명)</CardDescription>
+            <CardDescription>총 90명 정원</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -254,7 +270,7 @@ export default function TrainingRegistration() {
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <Label className="text-base font-medium">교육 날짜 선택 [택 1 가능]</Label>
-                  <p className="text-sm text-blue-600">(*날짜 선택이 불가능한 일정은 보람에게 말씀주세요[전직원 1회 필수 신청])</p>
+                  <p className="text-sm text-blue-600">(*날짜 선택이 불가능한 일정은 담당자에게 확인하세요)</p>
                 </div>
                 <RadioGroup
                   value={formData.selectedDate}

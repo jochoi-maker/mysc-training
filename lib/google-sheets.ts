@@ -132,7 +132,7 @@ export async function getAllRegistrations(): Promise<Array<{name: string, date: 
   }
 }
 
-// 교육 날짜 목록 가져오기 (L열)
+// 교육 날짜 목록 가져오기 (L열: 날짜 ID, M열: 최대 인원)
 export async function getTrainingDates(): Promise<Array<{id: string, label: string, capacity: number}>> {
   try {
     if (!GOOGLE_SPREADSHEET_ID) {
@@ -142,7 +142,7 @@ export async function getTrainingDates(): Promise<Array<{id: string, label: stri
     const sheets = createSheetsClient();
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: GOOGLE_SPREADSHEET_ID,
-      range: 'L2:N', // L열(날짜), M열(라벨), N열(정원) 2행부터
+      range: 'L2:M', // L열(날짜), M열(최대 인원) 2행부터
     });
 
     const rows = response.data.values;
@@ -154,11 +154,53 @@ export async function getTrainingDates(): Promise<Array<{id: string, label: stri
       .filter(row => row[0] && row[0].trim() !== '') // 날짜가 있는 행만
       .map(row => ({
         id: row[0].trim(),
-        label: row[1] ? row[1].trim() : row[0].trim(),
-        capacity: row[2] ? parseInt(row[2]) || 25 : 25
+        label: row[0].trim(), // 날짜 ID를 라벨로도 사용
+        capacity: row[1] ? parseInt(row[1]) || 25 : 25 // M열에서 최대 인원 가져오기
       }));
   } catch (error) {
     console.error('Error fetching training dates:', error);
     throw new Error('Failed to fetch training dates from Google Sheets');
+  }
+}
+
+// 교육 시간 정보 가져오기 (J2 셀)
+export async function getEducationTime(): Promise<string> {
+  try {
+    if (!GOOGLE_SPREADSHEET_ID) {
+      throw new Error('Spreadsheet ID not found');
+    }
+
+    const sheets = createSheetsClient();
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: GOOGLE_SPREADSHEET_ID,
+      range: 'J2', // J열 2행
+    });
+
+    const value = response.data.values?.[0]?.[0];
+    return value || '교육 시간 정보 없음';
+  } catch (error) {
+    console.error('Error fetching education time:', error);
+    return '교육 시간 정보 없음';
+  }
+}
+
+// 신청 마감일 가져오기 (I2 셀)
+export async function getApplicationDeadline(): Promise<string> {
+  try {
+    if (!GOOGLE_SPREADSHEET_ID) {
+      throw new Error('Spreadsheet ID not found');
+    }
+
+    const sheets = createSheetsClient();
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: GOOGLE_SPREADSHEET_ID,
+      range: 'I2', // I열 2행
+    });
+
+    const value = response.data.values?.[0]?.[0];
+    return value || '2025-09-05'; // 기본값
+  } catch (error) {
+    console.error('Error fetching application deadline:', error);
+    return '2025-09-05'; // 기본값
   }
 }

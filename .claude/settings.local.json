@@ -12,9 +12,19 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(pnpm run:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(git push:*)",
+      "Bash(\"C:\\Program Files\\GitHub CLI\\gh.exe\" --version)",
+      "Bash(\"C:\\Program Files\\GitHub CLI\\gh.exe\" repo create jochoi-maker/mysc-training --public --description \"MYSC 교육 신청 시스템\")",
+      "Bash(\"C:\\Program Files\\GitHub CLI\\gh.exe\" auth login)",
+      "Bash(git remote add:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(pnpm add:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "defaultMode": "acceptEdits"
   }
 }

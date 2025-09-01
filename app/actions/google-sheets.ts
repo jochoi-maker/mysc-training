@@ -1,6 +1,6 @@
 'use server'
 
-import { getNamesFromSheet, updateRegistrationDate, getAllRegistrations, getTrainingDates } from '@/lib/google-sheets';
+import { getNamesFromSheet, updateRegistrationDate, getAllRegistrations, getTrainingDates, getEducationTime, getApplicationDeadline } from '@/lib/google-sheets';
 
 // 이름 목록 가져오기
 export async function fetchNames() {
@@ -43,5 +43,27 @@ export async function fetchTrainingDates() {
   } catch (error) {
     console.error('Error fetching training dates:', error);
     return { success: false, error: '교육 날짜를 가져오는데 실패했습니다.' };
+  }
+}
+
+// 교육 시간 정보 가져오기
+export async function fetchEducationTime() {
+  try {
+    const time = await getEducationTime();
+    return { success: true, data: time };
+  } catch (error) {
+    console.error('Error fetching education time:', error);
+    return { success: false, error: '교육 시간을 가져오는데 실패했습니다.' };
+  }
+}
+
+// 신청 마감일 가져오기
+export async function fetchApplicationDeadline() {
+  try {
+    const deadline = await getApplicationDeadline();
+    return { success: true, data: deadline };
+  } catch (error) {
+    console.error('Error fetching application deadline:', error);
+    return { success: false, error: '신청 마감일을 가져오는데 실패했습니다.' };
   }
 }
