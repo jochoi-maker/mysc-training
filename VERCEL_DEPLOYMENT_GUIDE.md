@@ -7,8 +7,8 @@ GitHub 저장소와 Vercel 배포가 성공적으로 완료되었습니다.
 ### 📍 URL 정보
 
 - **GitHub 저장소**: https://github.com/jochoi-maker/mysc-training
-- **Vercel 프로덕션 URL**: https://mysc-training-j8x1ml0t5-choi-jong-oks-projects.vercel.app
-- **Vercel 대시보드**: https://vercel.com/choi-jong-oks-projects/mysc-training
+- **Vercel 프로덕션 URL**: https://mysc-education-0901.vercel.app
+- **Vercel 대시보드**: https://vercel.com/choi-jong-oks-projects/mysc-education-0901
 
 ### ⚠️ 중요: 환경 변수 설정 필요
 
@@ -17,7 +17,7 @@ GitHub 저장소와 Vercel 배포가 성공적으로 완료되었습니다.
 #### 환경 변수 설정 방법:
 
 1. **Vercel 환경 변수 설정 페이지 접속**
-   - URL: https://vercel.com/choi-jong-oks-projects/mysc-training/settings/environment-variables
+   - URL: https://vercel.com/choi-jong-oks-projects/mysc-education-0901/settings/environment-variables
 
 2. **다음 3개의 환경 변수 추가:**
 
@@ -81,8 +81,8 @@ GitHub 저장소와 Vercel 배포가 성공적으로 완료되었습니다.
 ### 📱 접속 정보
 
 배포가 완료되면 다음 URL로 접속 가능합니다:
-- 메인 페이지: https://mysc-training-j8x1ml0t5-choi-jong-oks-projects.vercel.app
-- 관리자 페이지: https://mysc-training-j8x1ml0t5-choi-jong-oks-projects.vercel.app/admin
+- 메인 페이지: https://mysc-education-0901.vercel.app
+- 관리자 페이지: https://mysc-education-0901.vercel.app/admin
 
 관리자 비밀번호: `mysc2025`
 
