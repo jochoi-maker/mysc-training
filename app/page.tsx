@@ -151,7 +151,10 @@ export default function TrainingRegistration() {
 
     // Check capacity
     const currentCount = getRegistrationCount(formData.selectedDate)
-    if (currentCount >= 25) {
+    const selectedDate = trainingDates.find(date => date.id === formData.selectedDate)
+    const maxCapacity = selectedDate?.capacity || 25 // 기본값 25
+    
+    if (currentCount >= maxCapacity) {
       setMessage({ type: "error", text: "선택한 날짜의 정원이 마감되었습니다." })
       setIsSubmitting(false)
       return
